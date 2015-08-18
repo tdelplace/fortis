@@ -194,10 +194,9 @@ namespace Fortis.Model
 		{
 			var pageWrapper = SpawnProvider.FromItem<TPageItem>(ContextProvider.PageContextItem);
 			var renderingWrapper = SpawnProvider.FromItem<TRenderingItem>(ContextProvider.RenderingContextItem);
-			var renderingParametersWrapper = SpawnProvider.FromRenderingParameters<TRenderingParametersItem>(ContextProvider.RenderingItem, ContextProvider.RenderingParameters);
+			var validRenderingParametersWrapper = SpawnProvider.FromRenderingParameters<TRenderingParametersItem>(ContextProvider.RenderingItem, ContextProvider.RenderingParameters);
 			var validPageWrapper = (TPageItem)(pageWrapper is TPageItem ? pageWrapper : null);
-			var validRenderingWrapper = (TRenderingItem)(renderingWrapper is TRenderingItem ? renderingWrapper : null);
-			var validRenderingParametersWrapper = (TRenderingParametersItem)(renderingParametersWrapper is TRenderingParametersItem ? renderingParametersWrapper : null);
+			var validRenderingWrapper = (TRenderingItem)(renderingWrapper is TRenderingItem ? renderingWrapper : null);			
 
 			return new RenderingModel<TPageItem, TRenderingItem, TRenderingParametersItem>(validPageWrapper, validRenderingWrapper, validRenderingParametersWrapper, factory);
 		}

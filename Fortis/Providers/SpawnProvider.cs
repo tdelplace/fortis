@@ -131,7 +131,7 @@ namespace Fortis.Providers
 		    return items.Select(FromItem<T>).OfType<T>();
 		}
 
-	    public IRenderingParameterWrapper FromRenderingParameters<T>(Item renderingItem, Dictionary<string, string> parameters)
+	    public T FromRenderingParameters<T>(Item renderingItem, Dictionary<string, string> parameters)
 			where T : IRenderingParameterWrapper
 		{
 			if (renderingItem != null)
@@ -146,13 +146,14 @@ namespace Fortis.Providers
 						throw new Exception("Fortis | Unable to find rendering parameters template " + id + " for " + renderingItem.Name);
 					}
 
-					var type = TemplateMapProvider.RenderingParametersTemplateMap[templateId.Guid][0];
+					var type = TemplateMapProvider.RenderingParametersTemplateMap[templateId.Guid].FirstOrDefault(x => x.ImplementsInterface(typeof(T)));
 
-					return (IRenderingParameterWrapper)Activator.CreateInstance(type, parameters, this);
+                    if(type != null)
+                        return (T)Activator.CreateInstance(type, parameters, this);
 				}
 			}
 
-			return null;
+			return default(T);
 		}
 
 		public IEnumerable<IFieldWrapper> FromFields(FieldCollection fields)

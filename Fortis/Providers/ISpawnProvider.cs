@@ -17,7 +17,7 @@ namespace Fortis.Providers
 		IItemWrapper FromItem(Item item, Type template = null);
 		IEnumerable<IItemWrapper> FromItems(IEnumerable<Item> items);
 		IEnumerable<T> FromItems<T>(IEnumerable<Item> items) where T : IItemWrapper;
-		IRenderingParameterWrapper FromRenderingParameters<T>(Item renderingItem, Dictionary<string, string> parameters) where T : IRenderingParameterWrapper;
+		T FromRenderingParameters<T>(Item renderingItem, Dictionary<string, string> parameters) where T : IRenderingParameterWrapper;
 		IEnumerable<IFieldWrapper> FromFields(FieldCollection fields);
 		IEnumerable<IFieldWrapper> FromFields(FieldChangeList fields);
 		IFieldWrapper FromField(Field field);

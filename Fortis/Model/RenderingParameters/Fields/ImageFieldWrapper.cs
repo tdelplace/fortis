@@ -20,10 +20,10 @@ namespace Fortis.Model.RenderingParameters.Fields
 	            if (_media != null)
 	                return _media;
 
-	            if (string.IsNullOrWhiteSpace(Value))
+	            if (string.IsNullOrWhiteSpace(_value))
                     return null;
 
-	            var imageId = XmlUtil.GetAttribute("mediaid", XmlUtil.LoadXml(Value));
+	            var imageId = XmlUtil.GetAttribute("mediaid", XmlUtil.LoadXml(_value));
 	            _media = Sitecore.Context.Database.GetItem(imageId);
 
                 return _media;
@@ -63,6 +63,6 @@ namespace Fortis.Model.RenderingParameters.Fields
 	        throw new NotImplementedException();
 	    }
 
-	    public string Value { get; set; }
-    }
+	    public string Value => GetSourceUri();
+	}
 }
