@@ -141,20 +141,52 @@ namespace Fortis.Providers
 
 				if (ID.TryParse(id, out templateId))
 				{
-					if (!TemplateMapProvider.RenderingParametersTemplateMap.ContainsKey(templateId.Guid))
-					{
-						throw new Exception("Fortis | Unable to find rendering parameters template " + id + " for " + renderingItem.Name);
-					}
+                    if (TemplateMapProvider.RenderingParametersTemplateMap.ContainsKey(templateId.ToGuid()))
+                    {
+                        Type type = null;
+                        var template = typeof (T);
+                        // Get type information
+                        if (template.IsInterface)
+                            type = TemplateMapProvider.RenderingParametersTemplateMap[templateId.ToGuid()].FirstOrDefault(t => t.ImplementsInterface(template));
 
-					var type = TemplateMapProvider.RenderingParametersTemplateMap[templateId.Guid].FirstOrDefault(x => x.ImplementsInterface(typeof(T)));
+                        if (type == null)
+                        {
+                            var wrapperType = template;
 
-                    if(type != null)
-                        return (T)Activator.CreateInstance(type, parameters, this);
+                            // Attempt to match the template of the type passed through to an inherited template.
+                            if (wrapperType != typeof(IItemWrapper))
+                            {
+                                if (!TemplateMapProvider.InterfaceTemplateMap.ContainsKey(wrapperType))
+                                {
+                                    throw new Exception("Fortis | Unable to find template for rendering parameter " + wrapperType.FullName);
+                                }
+
+                                var typeTemplateId = TemplateMapProvider.InterfaceTemplateMap[wrapperType];
+                                var itemTemplate = TemplateManager.GetTemplate(templateId, renderingItem.Database);
+
+                                if (itemTemplate != null)
+                                {
+                                    if (itemTemplate.DescendsFrom(new ID(typeTemplateId)))
+                                    {
+                                        // Get type information
+                                        if (template.IsInterface)
+                                            type = TemplateMapProvider.RenderingParametersTemplateMap[typeTemplateId].FirstOrDefault(t => t.ImplementsInterface(template));
+
+                                        if (type != null)
+                                            return (T)Activator.CreateInstance(type, parameters, this);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (type != null)
+                            return (T)Activator.CreateInstance(type, parameters, this);
+                    }
 				}
 			}
 
 			return default(T);
-		}
+        }
 
 		public IEnumerable<IFieldWrapper> FromFields(FieldCollection fields)
 		{
