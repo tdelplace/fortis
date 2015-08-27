@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Fortis.Model.Fields;
 using Fortis.Model;
+using Sitecore.ContentSearch.Linq.Extensions;
+using Sitecore.Data.Templates;
 
 namespace Fortis.Providers
 {
@@ -175,12 +177,12 @@ namespace Fortis.Providers
         public bool IsCompatibleTemplate(Guid templateId, Type template)
         {
             // template Type must at least implement IItemWrapper
-            if (template != typeof(IItemWrapper))
+            if (template != typeof(IItemWrapper) || !TemplateMap.ContainsKey(templateId) || !template.IsInterface)
             {
-                // TODO: Implement
+                return false;
             }
 
-            return true;
+            return TemplateMap[templateId].Any(type => type.ImplementsInterface(template));
         }
 
         public bool IsCompatibleFieldType<T>(string fieldType) where T : IFieldWrapper
