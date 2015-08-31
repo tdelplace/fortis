@@ -177,12 +177,15 @@ namespace Fortis.Providers
         public bool IsCompatibleTemplate(Guid templateId, Type template)
         {
             // template Type must at least implement IItemWrapper
-            if (template != typeof(IItemWrapper) || !TemplateMap.ContainsKey(templateId) || !template.IsInterface)
+            if (!template.ImplementsInterface(typeof(IItemWrapper)) || !TemplateMap.ContainsKey(templateId))
             {
                 return false;
             }
 
-            return TemplateMap[templateId].Any(type => type.ImplementsInterface(template));
+            if(template.IsInterface)
+                return TemplateMap[templateId].Any(type => type.ImplementsInterface(template));
+            else
+                return TemplateMap[templateId].Any(type => type == template || type.IsInstanceOfType(template));
         }
 
         public bool IsCompatibleFieldType<T>(string fieldType) where T : IFieldWrapper
