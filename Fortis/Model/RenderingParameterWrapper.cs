@@ -21,7 +21,13 @@ namespace Fortis.Model
 			SpawnProvider = spawnProvider;
 		}
 
-		protected IFieldWrapper GetField(string key, string type)
+	    public RenderingParameterWrapper(RenderingParameterWrapper rpx, ISpawnProvider spawnProvider)
+	    {
+	        _parameters = rpx._parameters;
+	        SpawnProvider = spawnProvider;
+	    }
+
+        protected IFieldWrapper GetField(string key, string type)
 		{
 			if (!_fields.ContainsKey(key))
 			{
