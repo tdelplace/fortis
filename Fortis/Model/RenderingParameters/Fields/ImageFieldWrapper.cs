@@ -12,7 +12,7 @@ namespace Fortis.Model.RenderingParameters.Fields
 {
 	public class ImageFieldWrapper : FieldWrapper, IImageFieldWrapper
 	{
-	    private static MediaItem _media;
+	    private MediaItem _media;
 	    public MediaItem Media
 	    {
 	        get

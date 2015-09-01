@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.UI;
+using Fortis.Providers;
 
 namespace Fortis.Model
 {
@@ -49,5 +50,6 @@ namespace Fortis.Model
 		T SelectSibling<T>(IItemWrapper wrapper) where T : IItemWrapper;
 		IEnumerable<T> SelectSiblings<T>(IItemWrapper wrapper) where T : IItemWrapper;
 		T GetRenderingDataSource<T>(Control control) where T : IItemWrapper;
-	}
+        ISpawnProvider SpawnProvider { get; }
+    }
 }

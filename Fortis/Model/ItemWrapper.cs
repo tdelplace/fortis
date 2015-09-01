@@ -493,5 +493,10 @@ namespace Fortis.Model
             }
             return Ancestor<T>(Item.Parent);
         }
+
+	    public virtual bool IsCompatibleWith<T>() where T : IItemWrapper
+	    {
+	        return _spawnProvider.TemplateMapProvider.IsCompatibleTemplate<T>(TemplateId);
+	    }
 	}
 }

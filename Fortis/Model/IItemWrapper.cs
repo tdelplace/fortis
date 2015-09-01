@@ -54,5 +54,6 @@ namespace Fortis.Model
 	    T ParentOrSelf<T>() where T : IItemWrapper;
 	    T Ancestor<T>() where T : IItemWrapper;
 	    T AncestorOrSelf<T>() where T : IItemWrapper;
-	}
+	    bool IsCompatibleWith<T>() where T : IItemWrapper;
+    }
 }

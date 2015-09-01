@@ -14,13 +14,14 @@ namespace Fortis.Model
 	public partial class ItemFactory : IItemFactory
 	{
 		protected readonly IContextProvider ContextProvider;
-		protected readonly ISpawnProvider SpawnProvider;
 
 		public ItemFactory(IContextProvider contextProvider, ISpawnProvider spawnProvider)
 		{
 			ContextProvider = contextProvider;
 			SpawnProvider = spawnProvider;
 		}
+
+		public ISpawnProvider SpawnProvider { get; }
 
 		public Guid GetTemplateID(Type type)
 		{
