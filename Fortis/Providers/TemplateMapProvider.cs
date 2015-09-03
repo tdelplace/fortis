@@ -64,6 +64,7 @@ namespace Fortis.Providers
         }
 
         private Dictionary<Type, Guid> _interfaceTemplateMap;
+
         public Dictionary<Type, Guid> InterfaceTemplateMap
         {
             get
@@ -79,11 +80,9 @@ namespace Fortis.Providers
                         {
                             foreach (var t in modelAssemblyProvider.Assembly.GetTypes())
                             {
-                                foreach (
-                                    TemplateMappingAttribute templateAttribute in
-                                        t.GetCustomAttributes(typeof(TemplateMappingAttribute), false))
+                                foreach (TemplateMappingAttribute templateAttribute in t.GetCustomAttributes(typeof (TemplateMappingAttribute), false))
                                 {
-                                    if (string.Equals(templateAttribute.Type, "InterfaceMap"))
+                                    if (string.Equals(templateAttribute.Type, "InterfaceMap") || string.Equals(templateAttribute.Type, "InterfaceRenderingParameter"))
                                     {
                                         if (!_interfaceTemplateMap.Keys.Contains(t))
                                         {
