@@ -54,8 +54,11 @@
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtenstions.cs" />
     <Compile Include="Global.cs" />
+    <Compile Include="Helpers\RulesHelper.cs" />
     <Compile Include="Helpers\TypeExtensions.cs" />
     <Compile Include="Helpers\TypeHelper.cs" />
+    <Compile Include="Model\Fields\IRulesFieldWrapper.cs" />
+    <Compile Include="Model\Fields\RulesFieldWrapper.cs" />
     <Compile Include="Model\Fields\IBooleanFieldWrapper.cs" />
     <Compile Include="Model\Fields\IDateTimeFieldWrapper.cs" />
     <Compile Include="Model\Fields\IFileFieldWrapper.cs" />
