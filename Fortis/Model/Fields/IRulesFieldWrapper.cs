@@ -2,5 +2,6 @@
 {
 	public interface IRulesFieldWrapper : IFieldWrapper<string>
 	{
+	    bool Evaluate();
 	}
 }

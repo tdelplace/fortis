@@ -71,7 +71,6 @@ namespace Fortis.Providers
             {
                 lock (_lock)
                 {
-
                     if (_interfaceTemplateMap == null)
                     {
                         _interfaceTemplateMap = new Dictionary<Type, Guid>();
@@ -93,6 +92,7 @@ namespace Fortis.Providers
                             }
                         }
                     }
+
                     return _interfaceTemplateMap;
                 }
             }
@@ -181,10 +181,19 @@ namespace Fortis.Providers
                 return false;
             }
 
-            if(template.IsInterface)
+            if (template.IsInterface)
                 return TemplateMap[templateId].Any(type => type.ImplementsInterface(template));
             else
-                return TemplateMap[templateId].Any(type => type == template || type.IsInstanceOfType(template));
+            {
+                // Get interface of template to check
+                var templateType = TemplateMap.FirstOrDefault(p => p.Value.Contains(template)).Key;
+                var interfaceType = InterfaceTemplateMap.FirstOrDefault(i => i.Value == templateType).Key;
+
+                // Get interface of item to chack
+                var interfaceToCheck = InterfaceTemplateMap.FirstOrDefault(i => i.Value == templateId).Key;
+
+                return interfaceToCheck == interfaceType || interfaceToCheck.ImplementsInterface(interfaceType);
+            }
         }
 
         public bool IsCompatibleFieldType<T>(string fieldType) where T : IFieldWrapper
