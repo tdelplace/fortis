@@ -8,12 +8,9 @@ namespace Fortis.Model.Fields
 {
 	public class FileFieldWrapper : FieldWrapper, IFileFieldWrapper
 	{
-		protected Item MediaItem
-		{
-			get { return ((FileField)Field).MediaItem; }
-		}
+		protected Item MediaItem => ((FileField)Field).MediaItem;
 
-		public FileFieldWrapper(Field field, ISpawnProvider spawnProvider)
+	    public FileFieldWrapper(Field field, ISpawnProvider spawnProvider)
 			: base(field, spawnProvider) { }
 
 		public FileFieldWrapper(string key, ref ItemWrapper item, ISpawnProvider spawnProvider, string value = null)
@@ -28,12 +25,24 @@ namespace Fortis.Model.Fields
 				returnValue = "/" + MediaManager.GetMediaUrl(MediaItem);
 			}
 
-			return new HtmlString(returnValue);	
-		}
+			return new HtmlString(returnValue);
+        }
 
-		public string Value
-		{
-			get { return Render().ToHtmlString(); }
-		}
+        public T GetTarget<T>() where T : IItemWrapper
+        {
+            if (Field == null || Field.Value.Length == 0)
+            {
+                return default(T);
+            }
+
+            if (MediaItem != null)
+            {
+                var target = SpawnProvider.FromItem<T>(new Item(MediaItem.ID, MediaItem.InnerData, MediaItem.Database));
+                return (T)((target is T) ? target : null);
+            }
+            return default(T);
+        }
+
+        public string Value => Render().ToHtmlString();
 	}
 }
